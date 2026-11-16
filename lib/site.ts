@@ -1,10 +1,8 @@
-// 正式網址：部署時設定環境變數 NEXT_PUBLIC_SITE_URL（例如 https://styles-token.vercel.app）
-// 在 Vercel 上未設定時，會自動使用專案的正式網域。
+// 正式網址。若要換網域，可設定環境變數 NEXT_PUBLIC_SITE_URL 覆蓋。
+const PRODUCTION_URL = "https://styles-token.hychen.space";
+
 function resolveSiteUrl() {
-  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
-  if (process.env.VERCEL_PROJECT_PRODUCTION_URL)
-    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
-  return "http://localhost:3000";
+  return process.env.NEXT_PUBLIC_SITE_URL || PRODUCTION_URL;
 }
 
 export const site = {
