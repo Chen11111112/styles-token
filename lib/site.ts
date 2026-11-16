@@ -10,7 +10,7 @@ export const site = {
   name: "Styles Token",
   title: "Styles Token — 複製各種風格的 Design Tokens",
   description:
-    "免費複製 Vercel、Linear、GitHub、Apple、Material 3、Notion、Spotify 等知名風格的 Design Tokens，提供 SCSS、CSS 變數與 JSON 格式，以及 Reset CSS，一鍵複製到你的專案。",
+    "免費複製 Vercel、Linear、GitHub、Apple、Material 3、Notion、Spotify、IBM Carbon、Atlassian、Shopify Polaris 等知名風格的 Design Tokens，含淺色與深色模式，提供 SCSS、CSS 變數與 JSON 格式，以及 Reset CSS，一鍵複製到你的專案。",
   keywords: [
     "design tokens",
     "SCSS",
@@ -25,6 +25,11 @@ export const site = {
     "Material 3",
     "Notion",
     "Spotify",
+    "IBM Carbon",
+    "Atlassian Design System",
+    "Shopify Polaris",
+    "dark mode tokens",
+    "深色模式",
     "Reset CSS",
     "色票",
   ],

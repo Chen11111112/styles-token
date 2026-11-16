@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { styles } from "@/lib/styles";
+import { colorsOf, styles } from "@/lib/styles";
 
 export const alt = "Styles Token — Copy design tokens in any style";
 export const size = { width: 1200, height: 630 };
@@ -33,7 +33,7 @@ export default function Image() {
             SCSS · CSS variables · JSON · Reset CSS
           </div>
         </div>
-        <div style={{ display: "flex", gap: 14 }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
           {styles.map((s) => (
             <div
               key={s.slug}
@@ -52,7 +52,7 @@ export default function Image() {
                   width: 16,
                   height: 16,
                   borderRadius: 999,
-                  background: s.tokens.colors.primary,
+                  background: colorsOf(s).primary,
                   border: "1px solid #555",
                 }}
               />

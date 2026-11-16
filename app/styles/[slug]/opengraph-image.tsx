@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { getStyle, styles } from "@/lib/styles";
+import { colorsOf, getStyle, styles } from "@/lib/styles";
 
 export const alt = "Style design tokens preview";
 export const size = { width: 1200, height: 630 };
@@ -16,7 +16,7 @@ export default async function Image({
 }) {
   const { slug } = await params;
   const style = getStyle(slug) ?? styles[0];
-  const c = style.tokens.colors;
+  const c = colorsOf(style);
   const swatches = ["primary", "accent", "success", "warning", "error"];
 
   return new ImageResponse(
@@ -58,7 +58,7 @@ export default async function Image({
             Copy tokens
           </div>
           <div style={{ display: "flex", marginLeft: "auto", gap: 14 }}>
-            {swatches.map((k) => (
+            {swatches.filter((k) => c[k]).map((k) => (
               <div
                 key={k}
                 style={{

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { styles } from "@/lib/styles";
+import { colorsOf, styles, themesOf } from "@/lib/styles";
 import { site } from "@/lib/site";
 import { JsonLd } from "@/components/json-ld";
 
@@ -51,7 +51,7 @@ export default function Home() {
 
       <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {styles.map((style) => {
-          const c = style.tokens.colors;
+          const c = colorsOf(style);
           return (
             <li key={style.slug}>
               <Link
@@ -82,8 +82,9 @@ export default function Home() {
                       Button
                     </span>
                     <div className="ml-auto flex">
-                      {["primary", "accent", "success", "warning", "error"].map(
-                        (k) => (
+                      {["primary", "accent", "success", "warning", "error"]
+                        .filter((k) => c[k])
+                        .map((k) => (
                           <span
                             key={k}
                             className="-ml-1.5 size-5 rounded-full ring-2"
@@ -94,16 +95,20 @@ export default function Home() {
                               } as React.CSSProperties
                             }
                           />
-                        )
-                      )}
+                        ))}
                     </div>
                   </div>
                 </div>
                 <div className="flex items-center justify-between p-5">
                   <div>
                     <h2 className="font-semibold">{style.name} 風格</h2>
-                    <p className="mt-1 text-sm text-zinc-500">
+                    <p className="mt-1 flex items-center gap-2 text-sm text-zinc-500">
                       {style.tagline}
+                      <span className="text-xs" aria-label="可用主題">
+                        {themesOf(style)
+                          .map((th) => (th === "light" ? "☀︎" : "☾"))
+                          .join(" ")}
+                      </span>
                     </p>
                   </div>
                   <span
