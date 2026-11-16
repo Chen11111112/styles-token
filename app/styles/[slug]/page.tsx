@@ -80,7 +80,7 @@ async function StyleContent({
         <div className="grid gap-8 md:grid-cols-2">
           <div>
             <p
-              style={{ fontSize: t.fontSizes.sm, color: t.colors["gray-600"] }}
+              style={{ fontSize: t.fontSizes.sm, color: t.colors.muted }}
             >
               Preview
             </p>
@@ -97,7 +97,7 @@ async function StyleContent({
             </h2>
             <p
               className="mt-3"
-              style={{ fontSize: t.fontSizes.base, color: t.colors["gray-600"] }}
+              style={{ fontSize: t.fontSizes.base, color: t.colors.muted }}
             >
               使用 {style.name} token 打造的範例元件。
             </p>
@@ -139,7 +139,7 @@ async function StyleContent({
             <p style={{ fontWeight: t.fontWeights.semibold }}>Card</p>
             <p
               className="mt-1"
-              style={{ fontSize: t.fontSizes.sm, color: t.colors["gray-600"] }}
+              style={{ fontSize: t.fontSizes.sm, color: t.colors.muted }}
             >
               radius-lg · shadow-md
             </p>
