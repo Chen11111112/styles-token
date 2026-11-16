@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getStyle, styles, toCss, toJson, toScss } from "@/lib/styles";
-import { CodeViewer } from "./code-viewer";
+import { CodeViewer } from "@/components/code-viewer";
 
 export function generateStaticParams() {
   return styles.map((s) => ({ slug: s.slug }));
