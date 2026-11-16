@@ -1,9 +1,44 @@
 import Link from "next/link";
 import { styles } from "@/lib/styles";
+import { site } from "@/lib/site";
+import { JsonLd } from "@/components/json-ld";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      name: site.name,
+      url: site.url,
+      description: site.description,
+      inLanguage: "zh-Hant",
+      author: { "@type": "Person", name: site.author.name, url: site.author.url },
+    },
+    {
+      "@type": "ItemList",
+      name: "Design token 風格列表",
+      itemListElement: [
+        ...styles.map((s, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: `${s.name} 風格 Design Tokens`,
+          url: `${site.url}/styles/${s.slug}`,
+        })),
+        {
+          "@type": "ListItem",
+          position: styles.length + 1,
+          name: "Reset CSS",
+          url: `${site.url}/reset`,
+        },
+      ],
+    },
+  ],
+};
 
 export default function Home() {
   return (
     <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-16 sm:px-6 sm:py-24">
+      <JsonLd data={jsonLd} />
       <header className="mb-14 max-w-2xl">
         <p className="mb-3 font-mono text-sm text-zinc-500">styles-token</p>
         <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">

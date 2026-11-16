@@ -3,7 +3,17 @@ import Link from "next/link";
 import { CodeViewer } from "@/components/code-viewer";
 import { resetCss } from "@/lib/reset";
 
-export const metadata: Metadata = { title: "Reset CSS" };
+const description =
+  "Eric Meyer Reset CSS v2.0：清除瀏覽器預設的 margin、padding、字級與清單樣式，讓各瀏覽器從相同起點開始。提供 CSS 與 SCSS，一鍵複製或下載。";
+
+export const metadata: Metadata = {
+  title: "Reset CSS（重置瀏覽器預設樣式）",
+  description,
+  keywords: ["Reset CSS", "CSS reset", "Eric Meyer reset", "重置樣式", "瀏覽器預設樣式"],
+  alternates: { canonical: "/reset" },
+  openGraph: { type: "article", url: "/reset", title: "Reset CSS", description },
+  twitter: { card: "summary_large_image", title: "Reset CSS", description },
+};
 
 export default function ResetPage() {
   const files = [
