@@ -24,29 +24,7 @@ export default function ResetPage() {
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
           Reset CSS
         </h1>
-        <p className="mt-3 max-w-2xl text-zinc-600 dark:text-zinc-400">
-          清除瀏覽器預設樣式（margin、padding、字級、清單符號等），讓每個瀏覽器從相同的起點開始。
-          使用 Eric Meyer 的 Reset CSS v2.0（public domain）。
-        </p>
       </header>
-
-      <section className="mb-10 grid gap-4 sm:grid-cols-3">
-        {[
-          ["先載入", "放在所有樣式與 token 之前引入，例如 @use \"reset\";"],
-          ["搭配 token", "Reset 清空預設值，再用任一風格的 token 重新定義字體、顏色與間距。"],
-          ["Tailwind 使用者", "Tailwind 已內建 Preflight（同樣是 reset），不需要再加這份。"],
-        ].map(([title, body]) => (
-          <div
-            key={title}
-            className="rounded-xl border border-zinc-200 p-5 dark:border-zinc-800"
-          >
-            <p className="font-medium">{title}</p>
-            <p className="mt-1.5 text-sm text-zinc-600 dark:text-zinc-400">
-              {body}
-            </p>
-          </div>
-        ))}
-      </section>
 
       <section>
         <h2 className="mb-4 text-lg font-semibold">程式碼</h2>

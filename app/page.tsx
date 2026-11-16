@@ -15,39 +15,6 @@ export default function Home() {
       </header>
 
       <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        <li>
-          <Link
-            href="/reset"
-            className="group block overflow-hidden rounded-xl border border-zinc-200 bg-white transition hover:-translate-y-0.5 hover:border-zinc-400 hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-600"
-          >
-            <div className="flex h-36 flex-col justify-between border-b border-dashed border-zinc-300 bg-[repeating-linear-gradient(45deg,transparent,transparent_8px,rgba(120,120,120,0.08)_8px,rgba(120,120,120,0.08)_9px)] p-5 font-mono dark:border-zinc-700">
-              <span className="text-sm text-zinc-500">
-                margin: 0;
-                <br />
-                padding: 0;
-                <br />
-                border: 0;
-              </span>
-              <span className="self-start rounded-md border border-zinc-300 px-2 py-0.5 text-xs text-zinc-600 dark:border-zinc-700 dark:text-zinc-400">
-                reset.css
-              </span>
-            </div>
-            <div className="flex items-center justify-between p-5">
-              <div>
-                <h2 className="font-semibold">Reset CSS</h2>
-                <p className="mt-1 text-sm text-zinc-500">
-                  重置瀏覽器預設樣式
-                </p>
-              </div>
-              <span
-                aria-hidden
-                className="text-zinc-400 transition group-hover:translate-x-1 group-hover:text-zinc-900 dark:group-hover:text-zinc-100"
-              >
-                →
-              </span>
-            </div>
-          </Link>
-        </li>
         {styles.map((style) => {
           const c = style.tokens.colors;
           return (
@@ -115,6 +82,39 @@ export default function Home() {
             </li>
           );
         })}
+        <li>
+          <Link
+            href="/reset"
+            className="group block overflow-hidden rounded-xl border border-zinc-200 bg-white transition hover:-translate-y-0.5 hover:border-zinc-400 hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-600"
+          >
+            <div className="flex h-36 flex-col justify-between border-b border-dashed border-zinc-300 bg-[repeating-linear-gradient(45deg,transparent,transparent_8px,rgba(120,120,120,0.08)_8px,rgba(120,120,120,0.08)_9px)] p-5 font-mono dark:border-zinc-700">
+              <span className="text-sm text-zinc-500">
+                margin: 0;
+                <br />
+                padding: 0;
+                <br />
+                border: 0;
+              </span>
+              <span className="self-start rounded-md border border-zinc-300 px-2 py-0.5 text-xs text-zinc-600 dark:border-zinc-700 dark:text-zinc-400">
+                reset.css
+              </span>
+            </div>
+            <div className="flex items-center justify-between p-5">
+              <div>
+                <h2 className="font-semibold">Reset CSS</h2>
+                <p className="mt-1 text-sm text-zinc-500">
+                  重置瀏覽器預設樣式
+                </p>
+              </div>
+              <span
+                aria-hidden
+                className="text-zinc-400 transition group-hover:translate-x-1 group-hover:text-zinc-900 dark:group-hover:text-zinc-100"
+              >
+                →
+              </span>
+            </div>
+          </Link>
+        </li>
       </ul>
     </main>
   );
