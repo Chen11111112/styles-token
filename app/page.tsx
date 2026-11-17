@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { colorsOf, styles, themesOf } from "@/lib/styles";
+import { colorsOf, effectsOf, styles, surfaceStyles, themesOf } from "@/lib/styles";
 import { site } from "@/lib/site";
 import { JsonLd } from "@/components/json-ld";
 
@@ -52,6 +52,8 @@ export default function Home() {
       <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {styles.map((style) => {
           const c = colorsOf(style);
+          const fx = surfaceStyles(c, effectsOf(style), style.tokens.shadows.sm);
+          const hasBorderFx = !!effectsOf(style)["border-width"];
           return (
             <li key={style.slug}>
               <Link
@@ -61,13 +63,20 @@ export default function Home() {
                 <div
                   className="flex h-36 flex-col justify-between p-5"
                   style={{
-                    background: c.background,
+                    ...fx.page,
+                    border: undefined,
+                    borderBottom: `${fx.borderWidth} solid ${c.border}`,
                     color: c.foreground,
                     fontFamily: style.tokens.fonts.sans,
-                    borderBottom: `1px solid ${c.border}`,
                   }}
                 >
-                  <span className="text-2xl font-semibold tracking-tight">
+                  <span
+                    className="text-2xl font-semibold tracking-tight"
+                    style={{
+                      fontFamily: style.tokens.fonts.display,
+                      textShadow: fx.headingShadow,
+                    }}
+                  >
                     Aa
                   </span>
                   <div className="flex items-center gap-2">
@@ -77,6 +86,12 @@ export default function Home() {
                         background: c.primary,
                         color: c["primary-foreground"],
                         borderRadius: style.tokens.radii.md,
+                        border: hasBorderFx
+                          ? `${fx.borderWidth} solid ${c.border}`
+                          : undefined,
+                        boxShadow: hasBorderFx
+                          ? style.tokens.shadows.sm
+                          : undefined,
                       }}
                     >
                       Button

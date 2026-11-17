@@ -1,24 +1,36 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CodeViewer } from "@/components/code-viewer";
-import { resetCss } from "@/lib/reset";
+import { ResetViewer } from "@/components/reset-viewer";
+import { meyerReset, modernReset } from "@/lib/reset";
 
 const description =
-  "Eric Meyer Reset CSS v2.0：清除瀏覽器預設的 margin、padding、字級與清單樣式，讓各瀏覽器從相同起點開始。提供 CSS 與 SCSS，一鍵複製或下載。";
+  "Reset CSS：預設提供 Modern Reset（box-sizing、圖片自適應、表單繼承字體、減少動態效果等），也可切換為 Eric Meyer Reset v2.0。提供 CSS 與 SCSS，一鍵複製或下載。";
 
 export const metadata: Metadata = {
   title: "Reset CSS（重置瀏覽器預設樣式）",
   description,
-  keywords: ["Reset CSS", "CSS reset", "Eric Meyer reset", "重置樣式", "瀏覽器預設樣式"],
+  keywords: ["Reset CSS", "CSS reset", "Modern CSS reset", "Eric Meyer reset", "重置樣式", "瀏覽器預設樣式"],
   alternates: { canonical: "/reset" },
   openGraph: { type: "article", url: "/reset", title: "Reset CSS", description },
   twitter: { card: "summary_large_image", title: "Reset CSS", description },
 };
 
 export default function ResetPage() {
-  const files = [
-    { id: "css", label: "CSS", filename: "reset.css", code: resetCss },
-    { id: "scss", label: "SCSS", filename: "_reset.scss", code: resetCss },
+  const variants = [
+    {
+      id: "modern",
+      label: "Modern Reset",
+      note: "只修正不好用的預設值（推薦）",
+      slug: "modern-reset",
+      code: modernReset,
+    },
+    {
+      id: "meyer",
+      label: "Meyer Reset",
+      note: "Eric Meyer v2.0：清空所有預設樣式",
+      slug: "meyer-reset",
+      code: meyerReset,
+    },
   ];
 
   return (
@@ -38,7 +50,7 @@ export default function ResetPage() {
 
       <section>
         <h2 className="mb-4 text-lg font-semibold">程式碼</h2>
-        <CodeViewer files={files} />
+        <ResetViewer variants={variants} />
       </section>
     </main>
   );

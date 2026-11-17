@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import type { ColorSet, StyleTokens, ThemeName } from "@/lib/styles";
+import {
+  surfaceStyles,
+  type ColorSet,
+  type StyleTokens,
+  type ThemeName,
+} from "@/lib/styles";
 
 const themeLabel: Record<ThemeName, string> = { light: "淺色", dark: "深色" };
 const statusKeys = ["success", "warning", "error", "accent"];
@@ -29,6 +34,7 @@ export function StyleShowcase({ name, themes, tokens: t }: Props) {
   const [theme, setTheme] = useState<ThemeName>(themes[0]);
   const [copied, setCopied] = useState<string | null>(null);
   const c: ColorSet = t.colors[theme]!;
+  const fx = surfaceStyles(c, t.effects?.[theme] ?? {}, t.shadows.md);
 
   async function copySwatch(key: string, value: string) {
     await copyText(value);
@@ -73,10 +79,9 @@ export function StyleShowcase({ name, themes, tokens: t }: Props) {
       <section
         className="mb-10 rounded-xl p-6 transition-colors sm:p-8"
         style={{
-          background: c.background,
+          ...fx.page,
           color: c.foreground,
           fontFamily: t.fonts.sans,
-          border: `1px solid ${c.border}`,
         }}
       >
         <div className="grid gap-8 md:grid-cols-2">
@@ -85,10 +90,12 @@ export function StyleShowcase({ name, themes, tokens: t }: Props) {
             <h2
               className="mt-2"
               style={{
+                fontFamily: t.fonts.display ?? t.fonts.sans,
                 fontSize: t.fontSizes["2xl"],
                 fontWeight: t.fontWeights.bold,
                 lineHeight: 1.15,
                 letterSpacing: "-0.02em",
+                textShadow: fx.headingShadow,
               }}
             >
               Build something great.
@@ -104,6 +111,8 @@ export function StyleShowcase({ name, themes, tokens: t }: Props) {
                 style={{
                   background: c.primary,
                   color: c["primary-foreground"],
+                  border: `${fx.borderWidth} solid ${t.effects?.[theme]?.["border-width"] ? c.border : c.primary}`,
+                  boxShadow: t.effects?.[theme]?.["border-width"] ? t.shadows.sm : undefined,
                   borderRadius: t.radii.md,
                   padding: `${t.spacing["2"]} ${t.spacing["4"]}`,
                   fontSize: t.fontSizes.sm,
@@ -114,7 +123,7 @@ export function StyleShowcase({ name, themes, tokens: t }: Props) {
               </span>
               <span
                 style={{
-                  border: `1px solid ${c.border}`,
+                  border: `${fx.borderWidth} solid ${c.border}`,
                   borderRadius: t.radii.md,
                   padding: `${t.spacing["2"]} ${t.spacing["4"]}`,
                   fontSize: t.fontSizes.sm,
@@ -127,11 +136,9 @@ export function StyleShowcase({ name, themes, tokens: t }: Props) {
           </div>
           <div
             style={{
-              background: c.surface,
+              ...fx.card,
               borderRadius: t.radii.lg,
-              boxShadow: t.shadows.md,
               padding: t.spacing["5"],
-              border: `1px solid ${c.border}`,
             }}
           >
             <p style={{ fontWeight: t.fontWeights.semibold }}>Card</p>

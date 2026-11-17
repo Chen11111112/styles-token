@@ -1,5 +1,6 @@
 import {
   colorsOf,
+  effectsOf,
   themesOf,
   type ColorSet,
   type StyleDefinition,
@@ -17,8 +18,21 @@ function mapRefs(name: string, plural: string, entries: Entries) {
   return `$${plural}: (\n${lines.join("\n")}\n);`;
 }
 
+/** 值本身含有最外層逗號（多層漸層、多重陰影）時，在 Sass map 中需加括號 */
+function hasTopLevelComma(v: string) {
+  let depth = 0;
+  for (const ch of v) {
+    if (ch === "(") depth++;
+    else if (ch === ")") depth--;
+    else if (ch === "," && depth === 0) return true;
+  }
+  return false;
+}
+
 function mapValues(plural: string, colors: ColorSet) {
-  const lines = Object.entries(colors).map(([k, v]) => `  "${k}": ${v},`);
+  const lines = Object.entries(colors).map(
+    ([k, v]) => `  "${k}": ${hasTopLevelComma(v) ? `(${v})` : v},`
+  );
   return `$${plural}: (\n${lines.join("\n")}\n);`;
 }
 
@@ -51,6 +65,10 @@ function themeBlocks(
   return blocks.join("\n\n");
 }
 
+function fxVal(style: StyleDefinition, key: string, ifSet: string, otherwise: string) {
+  return effectsOf(style)[key] ? ifSet : otherwise;
+}
+
 function indent(s: string) {
   return s
     .split("\n")
@@ -68,13 +86,23 @@ export function toScss(style: StyleDefinition): string {
   const spacing = Object.entries(t.spacing);
   const shadows = Object.entries(t.shadows);
 
+  const hasFx = themes.some((th) => Object.keys(effectsOf(style, th)).length);
   const colorMaps = themes
     .map((th) => `// ${th === "light" ? "Light" : "Dark"}\n${mapValues(`colors-${th}`, colorsOf(style, th))}`)
     .join("\n\n");
+  const effectMaps = hasFx
+    ? `\n\n// ---------- Effects ----------\n${themes
+        .map((th) => mapValues(`effects-${th}`, effectsOf(style, th)))
+        .join("\n\n")}\n\n// $effect-* 同樣指向 CSS 變數\n${Object.keys(effectsOf(style))
+        .map((k) => `$effect-${k}: var(--effect-${k});`)
+        .join("\n")}`
+    : "";
 
   const root = themeBlocks(
     style,
-    (th) => `  @include theme-colors($colors-${th});`,
+    (th) =>
+      `  @include theme-colors($colors-${th});` +
+      (hasFx ? `\n  @include theme-effects($effects-${th});` : ""),
     `  @each $name, $value in $font-sizes {
     --font-size-#{$name}: #{$value};
   }
@@ -88,7 +116,7 @@ export function toScss(style: StyleDefinition): string {
     --shadow-#{$name}: #{$value};
   }
   --font-sans: #{$font-sans};
-  --font-mono: #{$font-mono};`
+  --font-mono: #{$font-mono};${t.fonts.display ? "\n  --font-display: #{$font-display};" : ""}`
   );
 
   return `// =============================================
@@ -103,11 +131,11 @@ export function toScss(style: StyleDefinition): string {
 ${colorMaps}
 
 // $color-* 指向 CSS 變數，切換主題時會自動跟著變
-${keys.map((k) => `$color-${k}: var(--color-${k});`).join("\n")}
+${keys.map((k) => `$color-${k}: var(--color-${k});`).join("\n")}${effectMaps}
 
 // ---------- Typography ----------
 $font-sans: ${t.fonts.sans};
-$font-mono: ${t.fonts.mono};
+$font-mono: ${t.fonts.mono};${t.fonts.display ? `\n$font-display: ${t.fonts.display};` : ""}
 
 ${varLines("font-size", sizes)}
 
@@ -163,7 +191,17 @@ ${
   @each $name, $value in $colors {
     --color-#{$name}: #{$value};
   }
-}
+}${
+    hasFx
+      ? `
+
+@mixin theme-effects($effects) {
+  @each $name, $value in $effects {
+    --effect-#{$name}: #{$value};
+  }
+}`
+      : ""
+  }
 
 // ---------- CSS Custom Properties ----------
 ${root}
@@ -191,9 +229,13 @@ ${root}
 @mixin card {
   padding: $space-5;
   background: $color-surface;
-  border: 1px solid $color-border;
+  border: ${fxVal(style, "border-width", "$effect-border-width", "1px")} solid $color-border;
   border-radius: $radius-lg;
-  box-shadow: $shadow-sm;
+  box-shadow: ${fxVal(style, "card-shadow", "$effect-card-shadow", "$shadow-sm")};${
+    effectsOf(style)["surface-backdrop"]
+      ? "\n  backdrop-filter: $effect-surface-backdrop;\n  -webkit-backdrop-filter: $effect-surface-backdrop;"
+      : ""
+  }
 }
 `;
 }
@@ -207,11 +249,17 @@ export function toCss(style: StyleDefinition): string {
 
   const root = themeBlocks(
     style,
-    (th) => block("color", colorsOf(style, th)),
+    (th) => {
+      const fx = effectsOf(style, th);
+      return (
+        block("color", colorsOf(style, th)) +
+        (Object.keys(fx).length ? "\n" + block("effect", fx) : "")
+      );
+    },
     `
   /* Typography */
   --font-sans: ${t.fonts.sans};
-  --font-mono: ${t.fonts.mono};
+  --font-mono: ${t.fonts.mono};${t.fonts.display ? `\n  --font-display: ${t.fonts.display};` : ""}
 ${block("font-size", t.fontSizes)}
 ${block("font-weight", t.fontWeights)}
 

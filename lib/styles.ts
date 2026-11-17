@@ -8,9 +8,17 @@ export type ThemeName = "light" | "dark";
  */
 export type ColorSet = Record<string, string>;
 
+/**
+ * 選用的視覺效果（依主題）。預覽會使用以下 key：
+ * border-width, background-image, surface-backdrop（backdrop-filter）,
+ * card-shadow（取代 shadow-md）, heading-shadow（標題 text-shadow）
+ */
+export type EffectSet = Record<string, string>;
+
 export type StyleTokens = {
   colors: Partial<Record<ThemeName, ColorSet>>;
-  fonts: { sans: string; mono: string };
+  effects?: Partial<Record<ThemeName, EffectSet>>;
+  fonts: { sans: string; mono: string; display?: string };
   fontSizes: Record<string, string>;
   fontWeights: Record<string, number>;
   radii: Record<string, string>;
@@ -436,157 +444,284 @@ export const styles: StyleDefinition[] = [
       motion: { duration: "200ms", easing: "cubic-bezier(0.3, 0, 0, 1)" },
     },
   },
+
+  // ---------- 以下為原創美學風格（非品牌） ----------
   {
-    slug: "carbon",
-    name: "IBM Carbon",
-    tagline: "方正理性・企業級",
+    slug: "neo-brutalism",
+    name: "Neo-Brutalism",
+    tagline: "粗框硬陰影・大膽撞色",
     description:
-      "IBM Carbon 設計系統：IBM Plex 字體、直角元件與明確的藍色互動色，適合資料密集的企業應用。",
+      "新粗野主義：厚黑邊框、無模糊的硬陰影、高飽和撞色與粗體字，個性鮮明、帶點反設計的趣味。",
     defaultTheme: "light",
     tokens: {
       colors: {
-        // 來源：@carbon/themes（white / g100）
         light: {
-          background: "#ffffff",
-          foreground: "#161616",
-          muted: "#525252",
-          surface: "#f4f4f4",
-          "layer-01": "#f4f4f4",
-          "border-strong": "#8d8d8d",
-          border: "#c6c6c6",
-          primary: "#0f62fe",
-          "primary-foreground": "#ffffff",
-          accent: "#0043ce",
-          success: "#24a148",
-          warning: "#f1c21b",
-          error: "#da1e28",
+          background: "#fffdf5",
+          foreground: "#000000",
+          muted: "#3d3d3d",
+          surface: "#ffffff",
+          border: "#000000",
+          primary: "#ffde03",
+          "primary-foreground": "#000000",
+          secondary: "#90e0ff",
+          accent: "#ff90e8",
+          success: "#23d160",
+          warning: "#ff9f1c",
+          error: "#ff3b3b",
         },
         dark: {
-          background: "#161616",
-          foreground: "#f4f4f4",
-          muted: "#c6c6c6",
-          surface: "#262626",
-          "layer-01": "#262626",
-          "border-strong": "#6f6f6f",
-          border: "#525252",
-          primary: "#0f62fe",
+          background: "#121212",
+          foreground: "#fffdf5",
+          muted: "#c4c4c4",
+          surface: "#1e1e1e",
+          border: "#fffdf5",
+          primary: "#ffde03",
+          "primary-foreground": "#000000",
+          secondary: "#90e0ff",
+          accent: "#ff90e8",
+          success: "#23d160",
+          warning: "#ff9f1c",
+          error: "#ff5c5c",
+        },
+      },
+      effects: {
+        light: { "border-width": "3px", "card-shadow": "6px 6px 0 0 #000000" },
+        dark: { "border-width": "3px", "card-shadow": "6px 6px 0 0 #fffdf5" },
+      },
+      fonts: {
+        sans: '"Space Grotesk", "Archivo", system-ui, sans-serif',
+        display: '"Archivo Black", "Space Grotesk", Impact, sans-serif',
+        mono: '"Space Mono", ui-monospace, monospace',
+      },
+      fontSizes: { xs: "12px", sm: "14px", base: "16px", lg: "20px", xl: "28px", "2xl": "40px", "3xl": "64px" },
+      fontWeights: { regular: 400, medium: 600, semibold: 700, bold: 900 },
+      radii: { sm: "0", md: "4px", lg: "8px", xl: "12px", full: "9999px" },
+      spacing: baseSpacing,
+      shadows: {
+        sm: "2px 2px 0 0 #000000",
+        md: "4px 4px 0 0 #000000",
+        lg: "8px 8px 0 0 #000000",
+      },
+      motion: { duration: "100ms", easing: "cubic-bezier(0.2, 0, 0, 1)" },
+    },
+  },
+  {
+    slug: "glassmorphism",
+    name: "Glassmorphism",
+    tagline: "毛玻璃・漸層光暈",
+    description:
+      "玻璃擬態：半透明表面加上背景模糊，疊在柔和的彩色光暈上，營造輕盈、有層次的未來感。",
+    defaultTheme: "dark",
+    tokens: {
+      colors: {
+        dark: {
+          background: "#0f0c29",
+          foreground: "#ffffff",
+          muted: "rgba(255, 255, 255, 0.7)",
+          surface: "rgba(255, 255, 255, 0.12)",
+          border: "rgba(255, 255, 255, 0.25)",
+          primary: "#ffffff",
+          "primary-foreground": "#1a1446",
+          accent: "#7dd3fc",
+          success: "#6ee7b7",
+          warning: "#fcd34d",
+          error: "#fda4af",
+        },
+        light: {
+          background: "#eef2ff",
+          foreground: "#1e1b4b",
+          muted: "rgba(30, 27, 75, 0.7)",
+          surface: "rgba(255, 255, 255, 0.45)",
+          border: "rgba(255, 255, 255, 0.7)",
+          primary: "#4f46e5",
           "primary-foreground": "#ffffff",
-          accent: "#4589ff",
-          success: "#42be65",
-          warning: "#f1c21b",
-          error: "#fa4d56",
+          accent: "#db2777",
+          success: "#059669",
+          warning: "#d97706",
+          error: "#e11d48",
+        },
+      },
+      effects: {
+        dark: {
+          "background-image":
+            "radial-gradient(circle at 20% 20%, rgba(236, 72, 153, 0.55), transparent 40%), radial-gradient(circle at 80% 30%, rgba(59, 130, 246, 0.55), transparent 45%), radial-gradient(circle at 50% 95%, rgba(168, 85, 247, 0.5), transparent 50%), linear-gradient(135deg, #0f0c29, #24243e)",
+          "surface-backdrop": "blur(20px) saturate(160%)",
+          "card-shadow": "0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3)",
+        },
+        light: {
+          "background-image":
+            "radial-gradient(circle at 15% 20%, rgba(244, 114, 182, 0.6), transparent 40%), radial-gradient(circle at 85% 25%, rgba(96, 165, 250, 0.6), transparent 45%), radial-gradient(circle at 50% 95%, rgba(167, 139, 250, 0.55), transparent 50%), linear-gradient(135deg, #eef2ff, #fdf2f8)",
+          "surface-backdrop": "blur(20px) saturate(160%)",
+          "card-shadow": "0 8px 32px rgba(31, 38, 135, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.6)",
         },
       },
       fonts: {
-        sans: '"IBM Plex Sans", "Helvetica Neue", Arial, sans-serif',
-        mono: '"IBM Plex Mono", Menlo, "DejaVu Sans Mono", monospace',
+        sans: '"Inter", "SF Pro Display", -apple-system, sans-serif',
+        mono: '"JetBrains Mono", ui-monospace, monospace',
       },
-      fontSizes: { xs: "12px", sm: "14px", base: "16px", lg: "20px", xl: "28px", "2xl": "42px", "3xl": "54px" },
-      fontWeights: { regular: 400, medium: 500, semibold: 600, bold: 600 },
+      fontSizes: { xs: "12px", sm: "14px", base: "16px", lg: "20px", xl: "26px", "2xl": "38px", "3xl": "56px" },
+      fontWeights: { regular: 400, medium: 500, semibold: 600, bold: 700 },
+      radii: { sm: "8px", md: "12px", lg: "20px", xl: "28px", full: "9999px" },
+      spacing: baseSpacing,
+      shadows: {
+        sm: "0 2px 8px rgba(0, 0, 0, 0.12)",
+        md: "0 8px 32px rgba(0, 0, 0, 0.2)",
+        lg: "0 16px 48px rgba(0, 0, 0, 0.3)",
+      },
+      motion: { duration: "250ms", easing: "cubic-bezier(0.4, 0, 0.2, 1)" },
+    },
+  },
+  {
+    slug: "terminal",
+    name: "Retro Terminal",
+    tagline: "綠色磷光・掃描線",
+    description:
+      "復古終端機：黑底綠字、等寬字體、文字微光與 CRT 掃描線，帶有 80 年代電腦螢幕的駭客氛圍。",
+    defaultTheme: "dark",
+    tokens: {
+      colors: {
+        dark: {
+          background: "#0a0f0a",
+          foreground: "#33ff66",
+          muted: "#1fae45",
+          surface: "#0f1a10",
+          border: "#1f5c2a",
+          primary: "#33ff66",
+          "primary-foreground": "#0a0f0a",
+          accent: "#ffb000",
+          success: "#33ff66",
+          warning: "#ffb000",
+          error: "#ff4d4d",
+        },
+      },
+      effects: {
+        dark: {
+          "border-width": "1px",
+          "background-image":
+            "repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.25) 0px, rgba(0, 0, 0, 0.25) 1px, transparent 1px, transparent 3px)",
+          "heading-shadow": "0 0 8px rgba(51, 255, 102, 0.7)",
+          "card-shadow": "0 0 0 1px #1f5c2a, 0 0 24px rgba(51, 255, 102, 0.15)",
+        },
+      },
+      fonts: {
+        sans: '"IBM Plex Mono", "VT323", ui-monospace, monospace',
+        display: '"VT323", "IBM Plex Mono", ui-monospace, monospace',
+        mono: '"IBM Plex Mono", "VT323", ui-monospace, monospace',
+      },
+      fontSizes: { xs: "12px", sm: "13px", base: "15px", lg: "18px", xl: "24px", "2xl": "36px", "3xl": "56px" },
+      fontWeights: { regular: 400, medium: 400, semibold: 700, bold: 700 },
+      radii: { sm: "0", md: "0", lg: "0", xl: "0", full: "0" },
+      spacing: baseSpacing,
+      shadows: {
+        sm: "0 0 4px rgba(51, 255, 102, 0.3)",
+        md: "0 0 12px rgba(51, 255, 102, 0.3)",
+        lg: "0 0 24px rgba(51, 255, 102, 0.35)",
+      },
+      motion: { duration: "0ms", easing: "steps(2, end)" },
+    },
+  },
+  {
+    slug: "cyberpunk",
+    name: "Cyberpunk",
+    tagline: "霓虹粉藍・未來都市",
+    description:
+      "賽博龐克：深紫夜色上的霓虹桃紅與電光青、發光邊框與網格背景，強烈的科幻都市感。",
+    defaultTheme: "dark",
+    tokens: {
+      colors: {
+        dark: {
+          background: "#0d0221",
+          foreground: "#f0f0ff",
+          muted: "#a59bd6",
+          surface: "#1a0b3d",
+          border: "#05d9e8",
+          primary: "#ff2a6d",
+          "primary-foreground": "#0d0221",
+          secondary: "#f9f002",
+          accent: "#05d9e8",
+          success: "#00ff9f",
+          warning: "#f9f002",
+          error: "#ff3864",
+        },
+      },
+      effects: {
+        dark: {
+          "border-width": "1px",
+          "background-image":
+            "linear-gradient(rgba(5, 217, 232, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(5, 217, 232, 0.08) 1px, transparent 1px)",
+          "background-size": "32px 32px",
+          "heading-shadow": "0 0 6px #ff2a6d, 0 0 18px rgba(255, 42, 109, 0.6), 2px 2px 0 #05d9e8",
+          "card-shadow": "0 0 0 1px #05d9e8, 0 0 20px rgba(5, 217, 232, 0.35), inset 0 0 20px rgba(5, 217, 232, 0.08)",
+        },
+      },
+      fonts: {
+        sans: '"Rajdhani", "Chakra Petch", "Segoe UI", sans-serif',
+        display: '"Orbitron", "Rajdhani", sans-serif',
+        mono: '"Share Tech Mono", ui-monospace, monospace',
+      },
+      fontSizes: { xs: "12px", sm: "14px", base: "16px", lg: "20px", xl: "28px", "2xl": "40px", "3xl": "64px" },
+      fontWeights: { regular: 400, medium: 500, semibold: 600, bold: 700 },
+      radii: { sm: "0", md: "2px", lg: "4px", xl: "8px", full: "9999px" },
+      spacing: baseSpacing,
+      shadows: {
+        sm: "0 0 6px rgba(255, 42, 109, 0.5)",
+        md: "0 0 16px rgba(5, 217, 232, 0.4)",
+        lg: "0 0 32px rgba(255, 42, 109, 0.5)",
+      },
+      motion: { duration: "180ms", easing: "cubic-bezier(0.7, 0, 0.3, 1)" },
+    },
+  },
+  {
+    slug: "editorial",
+    name: "Editorial",
+    tagline: "報刊襯線・紙張質感",
+    description:
+      "報刊編輯風：米色紙張、高對比襯線標題、細線分隔與紅色點綴，像一份精心排版的雜誌。",
+    defaultTheme: "light",
+    tokens: {
+      colors: {
+        light: {
+          background: "#f7f3ea",
+          foreground: "#1a1a1a",
+          muted: "#5c5c5c",
+          surface: "#fffdf8",
+          border: "#1a1a1a",
+          primary: "#1a1a1a",
+          "primary-foreground": "#f7f3ea",
+          accent: "#b3261e",
+          success: "#2e6b3f",
+          warning: "#a15c00",
+          error: "#b3261e",
+        },
+        dark: {
+          background: "#161513",
+          foreground: "#ece6d9",
+          muted: "#a39e93",
+          surface: "#1f1d1a",
+          border: "#ece6d9",
+          primary: "#ece6d9",
+          "primary-foreground": "#161513",
+          accent: "#e05a47",
+          success: "#6fae7f",
+          warning: "#d9a441",
+          error: "#e05a47",
+        },
+      },
+      effects: {
+        light: { "border-width": "1px", "card-shadow": "none" },
+        dark: { "border-width": "1px", "card-shadow": "none" },
+      },
+      fonts: {
+        sans: '"Source Serif 4", "Noto Serif TC", Georgia, serif',
+        display: '"Playfair Display", "Noto Serif TC", "Times New Roman", Georgia, serif',
+        mono: '"IBM Plex Mono", ui-monospace, monospace',
+      },
+      fontSizes: { xs: "12px", sm: "15px", base: "18px", lg: "22px", xl: "30px", "2xl": "48px", "3xl": "72px" },
+      fontWeights: { regular: 400, medium: 500, semibold: 700, bold: 900 },
       radii: { sm: "0", md: "0", lg: "0", xl: "0", full: "9999px" },
       spacing: baseSpacing,
-      shadows: {
-        sm: "0 1px 2px rgba(0, 0, 0, 0.2)",
-        md: "0 2px 6px rgba(0, 0, 0, 0.3)",
-        lg: "0 4px 16px rgba(0, 0, 0, 0.3)",
-      },
-      motion: { duration: "110ms", easing: "cubic-bezier(0.2, 0, 0.38, 0.9)" },
-    },
-  },
-  {
-    slug: "atlassian",
-    name: "Atlassian",
-    tagline: "協作友善・清爽藍調",
-    description:
-      "Atlassian Design System（Jira、Confluence）：中性灰文字、品牌藍按鈕與細緻的半透明邊框。",
-    defaultTheme: "light",
-    tokens: {
-      colors: {
-        // 來源：@atlaskit/tokens（atlassian-light / atlassian-dark）
-        light: {
-          background: "#ffffff",
-          foreground: "#292a2e",
-          muted: "#505258",
-          subtlest: "#6b6e76",
-          surface: "#f8f8f8",
-          border: "#0b120e24",
-          primary: "#1868db",
-          "primary-foreground": "#ffffff",
-          accent: "#1868db",
-          success: "#6a9a23",
-          warning: "#e06c00",
-          error: "#c9372c",
-        },
-        dark: {
-          background: "#1f1f21",
-          foreground: "#cecfd2",
-          muted: "#a9abaf",
-          subtlest: "#96999e",
-          surface: "#18191a",
-          border: "#e3e4f21f",
-          primary: "#669df1",
-          "primary-foreground": "#1f1f21",
-          accent: "#669df1",
-          success: "#82b536",
-          warning: "#fbc828",
-          error: "#f15b50",
-        },
-      },
-      fonts: {
-        sans: '"Atlassian Sans", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Ubuntu, sans-serif',
-        mono: '"Atlassian Mono", ui-monospace, Menlo, "Segoe UI Mono", monospace',
-      },
-      fontSizes: { xs: "12px", sm: "14px", base: "16px", lg: "20px", xl: "24px", "2xl": "28px", "3xl": "32px" },
-      fontWeights: { regular: 400, medium: 500, semibold: 600, bold: 653 },
-      radii: { sm: "2px", md: "4px", lg: "8px", xl: "12px", full: "9999px" },
-      spacing: baseSpacing,
-      shadows: {
-        sm: "0 1px 1px rgba(30, 31, 33, 0.25), 0 0 1px rgba(30, 31, 33, 0.31)",
-        md: "0 8px 12px rgba(30, 31, 33, 0.15), 0 0 1px rgba(30, 31, 33, 0.31)",
-        lg: "0 12px 24px rgba(30, 31, 33, 0.2), 0 0 1px rgba(30, 31, 33, 0.31)",
-      },
-      motion: { duration: "200ms", easing: "cubic-bezier(0.15, 1, 0.3, 1)" },
-    },
-  },
-  {
-    slug: "polaris",
-    name: "Shopify Polaris",
-    tagline: "商務後台・俐落中性",
-    description:
-      "Shopify 後台的 Polaris 設計系統：淺灰底配白色卡片、深灰主要按鈕與 Inter 字體。",
-    defaultTheme: "light",
-    tokens: {
-      colors: {
-        // 來源：@shopify/polaris-tokens（light；官方深色仍為 experimental，未收錄）
-        light: {
-          background: "#f1f1f1",
-          foreground: "#303030",
-          muted: "#616161",
-          surface: "#ffffff",
-          "surface-secondary": "#f7f7f7",
-          border: "#e3e3e3",
-          primary: "#303030",
-          "primary-foreground": "#ffffff",
-          accent: "#005bd3",
-          success: "#047b5d",
-          warning: "#ffe600",
-          error: "#c70a24",
-        },
-      },
-      fonts: {
-        sans: '"Inter", -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
-        mono: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
-      },
-      fontSizes: { xs: "11px", sm: "12px", base: "13px", lg: "16px", xl: "20px", "2xl": "24px", "3xl": "30px" },
-      fontWeights: { regular: 450, medium: 550, semibold: 650, bold: 700 },
-      radii: { sm: "4px", md: "8px", lg: "12px", xl: "16px", full: "9999px" },
-      spacing: baseSpacing,
-      shadows: {
-        sm: "0 1px 0 rgba(26, 26, 26, 0.07)",
-        md: "0 4px 6px -2px rgba(26, 26, 26, 0.2)",
-        lg: "0 8px 16px -4px rgba(26, 26, 26, 0.22)",
-      },
-      motion: { duration: "150ms", easing: "cubic-bezier(0.25, 0.1, 0.25, 1)" },
+      shadows: { sm: "none", md: "none", lg: "none" },
+      motion: { duration: "200ms", easing: "ease-in-out" },
     },
   },
 ];
@@ -603,5 +738,35 @@ export function themesOf(style: StyleDefinition): ThemeName[] {
 
 export function colorsOf(style: StyleDefinition, theme?: ThemeName): ColorSet {
   return style.tokens.colors[theme ?? style.defaultTheme]!;
+}
+
+export function effectsOf(style: StyleDefinition, theme?: ThemeName): EffectSet {
+  return style.tokens.effects?.[theme ?? style.defaultTheme] ?? {};
+}
+
+/** 預覽用：把 effects 轉成背景、邊框、陰影等樣式值 */
+export function surfaceStyles(
+  colors: ColorSet,
+  effects: EffectSet,
+  fallbackShadow: string
+) {
+  const bw = effects["border-width"] ?? "1px";
+  return {
+    page: {
+      backgroundColor: colors.background,
+      backgroundImage: effects["background-image"],
+      backgroundSize: effects["background-size"],
+      border: `${bw} solid ${colors.border}`,
+    },
+    card: {
+      background: colors.surface,
+      border: `${bw} solid ${colors.border}`,
+      boxShadow: effects["card-shadow"] ?? fallbackShadow,
+      backdropFilter: effects["surface-backdrop"],
+      WebkitBackdropFilter: effects["surface-backdrop"],
+    },
+    borderWidth: bw,
+    headingShadow: effects["heading-shadow"],
+  };
 }
 
